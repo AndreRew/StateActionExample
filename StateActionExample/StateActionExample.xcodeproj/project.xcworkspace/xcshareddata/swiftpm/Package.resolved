@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "dufap",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/AndreKuts/dufap.git",
+      "state" : {
+        "revision" : "2aa0ac084b15370f11f0bef1e3ec4cdf2a3786a3",
+        "version" : "1.0.1"
+      }
+    }
+  ],
+  "version" : 2
+}

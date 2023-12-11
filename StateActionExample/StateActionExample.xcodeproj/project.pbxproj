@@ -18,7 +18,7 @@
 		B9D3206C2B27B9E300F9B33D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D320672B27B9E300F9B33D /* ContentView.swift */; };
 		B9D3206D2B27B9E300F9B33D /* ContentAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D320682B27B9E300F9B33D /* ContentAction.swift */; };
 		B9D3206E2B27B9E300F9B33D /* ContentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D320692B27B9E300F9B33D /* ContentViewModel.swift */; };
-		B9D320732B27BCBA00F9B33D /* Dufap in Frameworks */ = {isa = PBXBuildFile; productRef = B9D320722B27BCBA00F9B33D /* Dufap */; };
+		B9D320762B27D93100F9B33D /* Dufap in Frameworks */ = {isa = PBXBuildFile; productRef = B9D320752B27D93100F9B33D /* Dufap */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,7 +48,6 @@
 		B9D3204D2B27B96B00F9B33D /* StateActionExampleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StateActionExampleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9D320512B27B96B00F9B33D /* StateActionExampleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateActionExampleUITests.swift; sourceTree = "<group>"; };
 		B9D320532B27B96B00F9B33D /* StateActionExampleUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateActionExampleUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		B9D320612B27B9B500F9B33D /* dufap-master */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "dufap-master"; path = "../../Downloads/dufap-master"; sourceTree = "<group>"; };
 		B9D320652B27B9E300F9B33D /* ContentState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentState.swift; sourceTree = "<group>"; };
 		B9D320662B27B9E300F9B33D /* ContentShim.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentShim.swift; sourceTree = "<group>"; };
 		B9D320672B27B9E300F9B33D /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -61,7 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9D320732B27BCBA00F9B33D /* Dufap in Frameworks */,
+				B9D320762B27D93100F9B33D /* Dufap in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,7 +84,6 @@
 		B9D3202A2B27B96900F9B33D = {
 			isa = PBXGroup;
 			children = (
-				B9D320602B27B9B500F9B33D /* Packages */,
 				B9D320352B27B96A00F9B33D /* StateActionExample */,
 				B9D320462B27B96B00F9B33D /* StateActionExampleTests */,
 				B9D320502B27B96B00F9B33D /* StateActionExampleUITests */,
@@ -140,14 +138,6 @@
 			path = StateActionExampleUITests;
 			sourceTree = "<group>";
 		};
-		B9D320602B27B9B500F9B33D /* Packages */ = {
-			isa = PBXGroup;
-			children = (
-				B9D320612B27B9B500F9B33D /* dufap-master */,
-			);
-			name = Packages;
-			sourceTree = "<group>";
-		};
 		B9D320642B27B9DB00F9B33D /* Content */ = {
 			isa = PBXGroup;
 			children = (
@@ -184,7 +174,7 @@
 			);
 			name = StateActionExample;
 			packageProductDependencies = (
-				B9D320722B27BCBA00F9B33D /* Dufap */,
+				B9D320752B27D93100F9B33D /* Dufap */,
 			);
 			productName = StateActionExample;
 			productReference = B9D320332B27B96A00F9B33D /* StateActionExample.app */;
@@ -258,6 +248,9 @@
 				Base,
 			);
 			mainGroup = B9D3202A2B27B96900F9B33D;
+			packageReferences = (
+				B9D320742B27D93100F9B33D /* XCRemoteSwiftPackageReference "dufap" */,
+			);
 			productRefGroup = B9D320342B27B96A00F9B33D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -633,9 +626,21 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		B9D320742B27D93100F9B33D /* XCRemoteSwiftPackageReference "dufap" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AndreKuts/dufap.git";
+			requirement = {
+				kind = exactVersion;
+				version = 1.0.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
-		B9D320722B27BCBA00F9B33D /* Dufap */ = {
+		B9D320752B27D93100F9B33D /* Dufap */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = B9D320742B27D93100F9B33D /* XCRemoteSwiftPackageReference "dufap" */;
 			productName = Dufap;
 		};
 /* End XCSwiftPackageProductDependency section */
