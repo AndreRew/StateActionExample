@@ -12,6 +12,7 @@ extension ContentView {
     // View Actions
     enum Action: ActionProtocol {
         case start
+        case loading
         case finish
         case buttonAction(parameter: String)
     }

@@ -22,6 +22,31 @@ struct ContentView: View {
 
     var body: some View {
         VStack {
+
+            switch viewModel.viewState {
+
+            case .initiation:
+                Text("Loading")
+                    .onAppear { viewModel.trigger(action: .loading) }
+
+            case .loading, .loaded:
+                mainFlowView
+
+            case .finished:
+                Text("Finished")
+
+            case .error:
+                Text("Error")
+            }
+        }
+        .padding()
+        .onDisappear { viewModel.trigger(action: .finish) }
+    }
+
+    private var mainFlowView: some View {
+
+        VStack {
+
             Image(systemName: viewModel.imageName)
                 .imageScale(.large)
                 .foregroundColor(.accentColor)
@@ -31,9 +56,6 @@ struct ContentView: View {
             Button("Test Action", action: { viewModel.trigger(action: .buttonAction(parameter: "Testing actions")) })
                 .padding()
         }
-        .padding()
-        .onAppear { viewModel.trigger(action: .start) }
-        .onDisappear { viewModel.trigger(action: .finish) }
     }
 }
 

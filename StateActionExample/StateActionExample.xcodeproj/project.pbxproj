@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B99A32882B7409530006947D /* ContentClassicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99A32872B7409530006947D /* ContentClassicViewModel.swift */; };
 		B9D320372B27B96A00F9B33D /* StateActionExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D320362B27B96A00F9B33D /* StateActionExampleApp.swift */; };
 		B9D3203B2B27B96B00F9B33D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9D3203A2B27B96B00F9B33D /* Assets.xcassets */; };
 		B9D3203E2B27B96B00F9B33D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9D3203D2B27B96B00F9B33D /* Preview Assets.xcassets */; };
@@ -39,6 +40,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B99A32872B7409530006947D /* ContentClassicViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentClassicViewModel.swift; sourceTree = "<group>"; };
 		B9D320332B27B96A00F9B33D /* StateActionExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StateActionExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9D320362B27B96A00F9B33D /* StateActionExampleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateActionExampleApp.swift; sourceTree = "<group>"; };
 		B9D3203A2B27B96B00F9B33D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -143,6 +145,7 @@
 			children = (
 				B9D320672B27B9E300F9B33D /* ContentView.swift */,
 				B9D320692B27B9E300F9B33D /* ContentViewModel.swift */,
+				B99A32872B7409530006947D /* ContentClassicViewModel.swift */,
 				B9D320682B27B9E300F9B33D /* ContentAction.swift */,
 				B9D320662B27B9E300F9B33D /* ContentShim.swift */,
 				B9D320652B27B9E300F9B33D /* ContentState.swift */,
@@ -295,6 +298,7 @@
 			files = (
 				B9D3206B2B27B9E300F9B33D /* ContentShim.swift in Sources */,
 				B9D3206D2B27B9E300F9B33D /* ContentAction.swift in Sources */,
+				B99A32882B7409530006947D /* ContentClassicViewModel.swift in Sources */,
 				B9D3206C2B27B9E300F9B33D /* ContentView.swift in Sources */,
 				B9D3206E2B27B9E300F9B33D /* ContentViewModel.swift in Sources */,
 				B9D320372B27B96A00F9B33D /* StateActionExampleApp.swift in Sources */,
@@ -631,8 +635,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AndreKuts/dufap.git";
 			requirement = {
-				kind = exactVersion;
-				version = 1.0.1;
+				branch = master;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

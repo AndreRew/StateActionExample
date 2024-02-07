@@ -12,20 +12,34 @@ extension ContentView {
     // All View's state
     struct State: StateProtocol {
 
+        /*
+         var isLoadable: Bool = false
+         var error: Error? = nil
+         var subInfo: String = ""
+         var bageNumber: Int? = nil
+         ...
+         */
+
         let imageName: String
         let buttonTitle: String
-
+        var items: [String]
         var text: String
+        var viewState: ViewState
 
-        init(imageName: String = "globe", buttonTitle: String = "Testing actions", text: String = "Hello, world!") {
+        init(imageName: String = "globe", buttonTitle: String = "Testing actions", items: [String] = [], text: String = "Hello, world!", viewState: ViewState = .initiation) {
             self.imageName = imageName
             self.buttonTitle = buttonTitle
+            self.items = items
             self.text = text
+            self.viewState = viewState
         }
     }
 
-    enum State2: StateProtocol {
-        case firstCase
-        case secondCase
+    enum ViewState: StateProtocol {
+        case initiation
+        case loading
+        case loaded
+        case finished
+        case error
     }
 }

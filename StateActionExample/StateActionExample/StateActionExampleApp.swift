@@ -9,6 +9,8 @@ import SwiftUI
 
 @main
 struct StateActionExampleApp: App {
+
+    // Keep flow actual easier to store ViewModel outside of View.
     let viewModel = ContentView.ViewModel()
 
     var body: some Scene {
