@@ -37,6 +37,10 @@ struct ContentView: View {
 
             case .error:
                 Text("Error")
+
+            case .openItem(let item):
+                // MARK: We can add custom animation for this thing
+                Text(item)
             }
         }
         .padding()
@@ -53,9 +57,29 @@ struct ContentView: View {
 
             Text(viewModel.text)
 
+            Picker("Picker", selection: .init(get: { viewModel.pickerSelected }, set: { viewModel.trigger(action: .selectNewPickerValue($0)) })) {
+                ForEach(viewModel.pickerValues, id: \.self) { item in
+                    Text(item)
+                        .tag(item)
+                }
+            }
+            .pickerStyle(.segmented)
+
+            if !viewModel.items.isEmpty {
+                NavigationView {
+                    List(viewModel.items, id: \.self) { item in
+                        NavigationLink("GO -> \(item)") {
+                            Text(item)
+                                .onAppear { viewModel.trigger(action: .itemOpened(item)) }
+                        }
+                    }
+                }
+            }
+
             Button("Test Action", action: { viewModel.trigger(action: .buttonAction(parameter: "Testing actions")) })
                 .padding()
         }
+        .navigationTitle("Test")
     }
 }
 

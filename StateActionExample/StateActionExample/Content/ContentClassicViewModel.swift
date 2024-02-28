@@ -6,6 +6,7 @@
 //
 
 import Combine
+import Foundation
 
 // MARK: Classic ViewModel
 extension ContentView {
@@ -18,6 +19,7 @@ extension ContentView {
         @Published var text: String
         @Published var items: [String]
 
+        var cancellable: AnyCancellable? = nil
         // MARK: - Here is example how the small and comfortable ViewModel become bigger and bigger with each new feature.
         // MARK: - As a result, maintaining this ViewModel could be more difficult than it was intended for.
 
@@ -34,9 +36,9 @@ extension ContentView {
          ...
          */
 
-        private let shim: Shim
+        private let shim: ShimContentView
 
-        init(shim: Shim, viewState: ViewState, imageName: String, buttonTitle: String, text: String, items: [String]) {
+        init(shim: ShimContentView = Shim(), viewState: ViewState, imageName: String, buttonTitle: String, text: String, items: [String]) {
             self.shim = shim
             self.viewState = viewState
             self.imageName = imageName
@@ -45,20 +47,65 @@ extension ContentView {
             self.items = items
         }
 
-        func startViewModel() {
+        func start() {
+
             if viewState != .initiation {
-                viewState = .initiation
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    viewState = .initiation
+                }
             }
+
+            cancellable = $text
+                .receive(on: DispatchQueue.main)
+                .removeDuplicates()
+                .sink(receiveValue: { print($0) })
         }
 
-        func finishViewModel() {
+        func finish() {
+
             if viewState != .finished {
-                viewState = .finished
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    viewState = .finished
+                }
             }
         }
 
         func buttonAction(parameter: String) {
-            text = shim.addParameterToText(text: text, parameter: parameter)
+            // MARK: We need to be sure that UI will be updated on the Main.
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                text = shim.addParameterToText(text: text, parameter: parameter)
+            }
+        }
+
+        func loading() {
+
+            Task { [weak self] in
+                guard let self else { return }
+
+                let newItems = await shim.doLoadAction()
+
+                // MARK: Need to jump to the Main thread for updating UI.
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    // It's to be on Main only
+                    items = newItems
+                }
+            }
+        }
+
+        func openItem(id: String) {
+            // MARK: We need to be sure that UI will be updated on the Main.
+            DispatchQueue.main.async { [weak self] in
+                guard let self else { return }
+                viewState = .openItem(id)
+            }
+        }
+
+        func itemOpened(id: String) {
+            // ...
         }
 
         /*

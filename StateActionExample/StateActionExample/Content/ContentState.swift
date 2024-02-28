@@ -25,6 +25,9 @@ extension ContentView {
         var items: [String]
         var text: String
         var viewState: ViewState
+        var isSelectingPickerFinished: Bool = true
+        var pickerSelected: String = "First"
+        var pickerValues: [String] = ["First", "Second"]
 
         init(imageName: String = "globe", buttonTitle: String = "Testing actions", items: [String] = [], text: String = "Hello, world!", viewState: ViewState = .initiation) {
             self.imageName = imageName
@@ -35,11 +38,12 @@ extension ContentView {
         }
     }
 
-    enum ViewState: StateProtocol {
+    enum ViewState: Equatable {
         case initiation
         case loading
         case loaded
         case finished
         case error
+        case openItem(String)
     }
 }

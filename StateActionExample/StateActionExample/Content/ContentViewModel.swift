@@ -18,24 +18,26 @@ extension ContentView {
         // MARK: State has to be @Published for updating UI
         // MARK: Everything that could or should be on View is stored here.
         // MARK: It is provide only one way, directional data flow.
+        // MARK: It will always be updated on the Main
         @Published
         var state: State
 
-        private let shim: Shim
+        private let shim: ShimContentView
 
         // MARK: - Init will not become a mess with hundreds parameters
-        init(shim: Shim = .init(), state: State = .init()) {
+        init(shim: ShimContentView = Shim(), state: State = .init()) {
             self.shim = shim
             self.state = state
         }
 
-        // This function handle handle all events from View.
-        // As a benefit of this approach we will get only one directional entry point (API) from a View.
-        // Easy extended with new action by adding a new case.
+        // MARK: This function handle handle all events from View.
+        // MARK: As a benefit of this approach we will get only one directional entry point (API) from a View.
+        // MARK: Easy extended with new action by adding a new case. 
+        // MARK: After adding the compiler, it will help to identify all the places where it might have an impact.
         func trigger(action: Action) {
 
-            // Easy handle logging all action in one place if needed
-            shim.logAnalytics(action)
+            // MARK: It is possible to handle multiple logging or custom handling methods with ease.
+            shim.baseHandling(action: action)
 
             switch action {
             case .start:
@@ -51,6 +53,29 @@ extension ContentView {
 
             case .buttonAction(let parameter):
                 buttonAction(parameter: parameter)
+
+            case .openItem(let item):
+                // TODO: Add preload item
+                state.viewState = .openItem(item)
+
+            case .selectNewPickerValue(let newPickerValue):
+
+                // MARK: Full control over binding and Updating UI
+                // MARK: If you want to lock action until action is done it's easily can be.
+                if state.isSelectingPickerFinished {
+                    state.isSelectingPickerFinished = false
+
+                    DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(3)) { [weak self] in
+                        guard let self else { return }
+                        state.pickerSelected = newPickerValue
+                        state.isSelectingPickerFinished = true
+                    }
+                } else {
+                    print(newPickerValue)
+                }
+
+            case .itemOpened:
+                break
             }
         }
     }
@@ -61,29 +86,40 @@ private extension ContentView.ViewModel {
     func finishAction() {
         // MARK: Easy handle concurrency.
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [weak self] in
+        DispatchQueue.global().asyncAfter(deadline: .now() + .seconds(1)) { [weak self] in
             guard let self else { return }
 
             if state.viewState != .finished {
+
+                shim.doFinishAction()
                 state.viewState = .finished
+            } else {
+
+                // Handling navigation if needed
+                shim.handleRoute(ContentRoute())
             }
         }
     }
 
     func loadingAction() {
 
-        // MARK: Easy handle concurrency.
-        if state.viewState != .loaded {
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [weak self] in
-                guard let self else { return }
+        // MARK: Another way of handle concurrency.
+
+        Task { [weak self] in
+            guard let self else { return }
+
+            if state.viewState != .loaded {
+                let newItems = await shim.doLoadAction()
+                state.items = newItems
                 state.viewState = .loaded
             }
         }
     }
 
     func buttonAction(parameter: String) {
-        // Easy handle custom logging
-        print("Added parameter with first letter: \(shim.getFirstLetter(from: parameter) ?? "none")")
-        state.text = shim.addParameterToText(text: state.text, parameter: parameter)
+        DispatchQueue.global().async { [weak self] in
+            guard let self else { return }
+            state.text = shim.addParameterToText(text: state.text, parameter: parameter)
+        }
     }
 }

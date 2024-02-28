@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/AndreKuts/dufap.git",
       "state" : {
-        "branch" : "master",
-        "revision" : "2aa0ac084b15370f11f0bef1e3ec4cdf2a3786a3"
+        "revision" : "929b524710d623506e54087cdf694c11e0048e57",
+        "version" : "1.0.2"
       }
     }
   ],

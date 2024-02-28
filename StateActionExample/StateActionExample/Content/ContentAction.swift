@@ -15,5 +15,8 @@ extension ContentView {
         case loading
         case finish
         case buttonAction(parameter: String)
+        case openItem(String)
+        case itemOpened(String)
+        case selectNewPickerValue(String)
     }
 }

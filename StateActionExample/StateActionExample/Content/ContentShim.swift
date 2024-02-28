@@ -5,22 +5,56 @@
 //  Created by Andrew Kuts on 2023-12-06.
 //
 
+import Foundation
+
 // MARK: - Shim
+protocol ShimContentView {
+
+    // MARK: It could be improved. We can confirm Shim protocol to the `ActionProvider` from Dufap lib
+    func doFinishAction()
+    func doLoadAction() async -> [String]
+    func addParameterToText(text: String, parameter: String) -> String
+    func getFirstLetter(from text: String) -> String?
+    func baseHandling(action: ContentView.Action)
+    func handleRoute(_ route: ContentRoute)
+
+}
+
 extension ContentView {
 
-    class Shim {
+    // MARK: My understanding of Shims may not be correct so please bear with me.
+    class Shim: ShimContentView {
 
         // MARK: Dependences
-        let addParameterToText: (String, String) -> String
-        let logAnalytics: (Action) -> Void
+        private let analytics: ContentAnalytics
+        private let dataBase: DataBase
+        private let network: Network
+        private let router: Router
+        private let logger: Logger
 
         // MARK: To avoid code duplication, we can pass all reusable systems as a dependency.
+        // MARK: To make ViewModel and Shim testable it is needed to keep dependencies as an abstraction.
         init(
-            addParameterToText: @escaping (String, String) -> String = { _, _ in "" },
-            logAnalytics: @escaping (Action) -> Void = Analytics.sharedInstance.handelContentViewAction(_:)
+            analytics: ContentAnalytics = Analytics.sharedInstance,
+            dataBase: DataBase = SQLDataBase(),
+            network: Network = BaseNetwork(),
+            router: Router = BaseRouter(),
+            logger: Logger = BaseLogger()
         ) {
-            self.addParameterToText = addParameterToText
-            self.logAnalytics = logAnalytics
+            self.analytics = analytics
+            self.dataBase = dataBase
+            self.network = network
+            self.router = router
+            self.logger = logger
+        }
+
+        func baseHandling(action: ContentView.Action) {
+            analytics.handelContentViewAction(action)
+            logger.logAction(action)
+        }
+
+        func handleRoute(_ route: ContentRoute) {
+            router.handleRoute(route)
         }
 
         // MARK: Inside of Shim could be function with uniq logic relevant only to this ContentView.
@@ -36,49 +70,18 @@ extension ContentView {
 
             return "\(firstLetter)"
         }
-    }
-}
 
-// MARK: Example of Custom Shim with Analytics
-class ShimWithAnalytics: ContentView.Shim {
-
-    var analyticsHistory: [String] = []
-
-    override func getFirstLetter(from text: String) -> String? {
-        let firstLetter = super.getFirstLetter(from: text)
-        defer {
-            let analyticsEvent = "ANALYTICS: \(#function) handle text: \(text) and returned first letter: \(firstLetter ?? "NONE")"
-            analyticsHistory.append(analyticsEvent)
+        func doFinishAction() {
+            print("doFinishAction")
         }
 
-        return firstLetter
-    }
-
-    override func addParameterToText(text: String, parameter: String) -> String {
-        let resultText = super.addParameterToText(text: text, parameter: parameter)
-        defer {
-            let analyticsEvent = "ANALYTICS: \(#function) handle text: \(text) and returned result: \(resultText)"
-            analyticsHistory.append(analyticsEvent)
-        }
-
-        return resultText
-    }
-}
-
-struct Analytics {
-
-    static let sharedInstance = Analytics()
-
-    private init() { }
-
-    func handelContentViewAction(_ action: ContentView.Action) {
-
-        switch action {
-        case .start, .loading, .finish:
-            print("ANALYTICS: this action '\(action)' do not needed to be logged")
-
-        case .buttonAction(let parameter):
-            print("ANALYTICS: log button action with value \(parameter)")
+        func doLoadAction() async -> [String] {
+            sleep(1)
+            var result: [String] = []
+            for number in 0...1000 {
+                result.append("\(number)")
+            }
+            return result
         }
     }
 }
